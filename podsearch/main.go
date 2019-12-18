@@ -12,18 +12,25 @@ import (
 )
 
 var (
-	limit                 int
-	isQuiet               bool
-	searchVal             string
-	isProperlyInitialized bool
+	limit     int
+	isQuiet   bool
+	searchVal string
 )
 
 func main() {
-	if !isProperlyInitialized {
+	flag.Parse()
+
+	if len(os.Args) < 2 {
+		fmt.Print("Search value must be provided!\n")
 		return
 	}
 
-	flag.Parse()
+	searchVal = os.Args[1]
+
+	if strings.HasPrefix(searchVal, "-") {
+		fmt.Print("Search value must be the first argument!\n")
+		return
+	}
 
 	var command = "kubectl get pods"
 
@@ -48,20 +55,6 @@ func main() {
 }
 
 func init() {
-	if len(os.Args) < 2 {
-		fmt.Print("Search value must be provided!\n")
-		return
-	}
-
-	searchVal = os.Args[1]
-
-	if strings.HasPrefix(searchVal, "-") {
-		fmt.Print("Search value must be the first argument!\n")
-		return
-	}
-
-	isProperlyInitialized = true
-
 	flag.IntVarP(&limit, "limit", "l", 0, "Sets limit of the displayed row")
-	flag.BoolVarP(&isQuiet, "quiet", "q", false, "Indicates if only names are needed")
+	flag.BoolVarP(&isQuiet, "quiet", "q", false, "Indicates if only names of pods are needed")
 }
