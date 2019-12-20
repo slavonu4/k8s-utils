@@ -25,10 +25,10 @@ func main() {
 		return
 	}
 
-	searchVal = os.Args[1]
+	searchVal = os.Args[len(os.Args)-1]
 
 	if strings.HasPrefix(searchVal, "-") {
-		fmt.Print("Search value must be the first argument!\n")
+		fmt.Print("Search value must be the last argument!\n")
 		return
 	}
 
